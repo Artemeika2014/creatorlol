@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>CreatorLoL — Публикация приложений для LoLOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg: linear-gradient(135deg, #0f0f2e, #1a1a4a);
+    --glass: rgba(255,255,255,0.06);
+    --glass-border: rgba(255,255,255,0.12);
+    --text: #fff;
+    --accent: #7b5ea7;
+    --success: #4ade80;
+    --danger: #ff3b30;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: 'Google Sans', 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* ---------- ЭКРАНЫ ---------- */
+.screen {
+    display: none;
+    min-height: 100vh;
+    width: 100vw;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: fadeSlideIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.screen.active { display: flex; }
+@keyframes fadeSlideIn {
+    from { opacity: 0; transform: translateY(20px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ---------- ЛОГИН ---------- */
+.auth-container {
+    width: 100%;
+    max-width: 420px;
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    border-radius: 32px;
+    padding: 40px 30px 30px;
+    border: 1px solid var(--glass-border);
+    text-align: center;
+}
+.auth-logo {
+    font-size: 2.8rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+    background: linear-gradient(135deg, #b89fd6, #7b5ea7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.auth-sub {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 4px;
+    margin-bottom: 28px;
+    text-transform: uppercase;
+}
+.auth-desc {
+    font-size: 0.85rem;
+    opacity: 0.6;
+    line-height: 1.6;
+    margin-bottom: 24px;
+}
+.auth-input-group input {
+    width: 100%;
+    padding: 16px 18px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    color: #fff;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 2px;
+    text-align: center;
+    outline: none;
+    font-size: 1rem;
+}
+.auth-input-group input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 30px rgba(123, 94, 167, 0.2);
+}
+.auth-input-group input::placeholder {
+    color: rgba(255, 255, 255, 0.25);
+    letter-spacing: 1px;
+    font-family: 'Google Sans', sans-serif;
+}
+.auth-btn {
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-radius: 16px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 12px;
+    background: var(--accent);
+    color: #fff;
+    font-family: inherit;
+    transition: all 0.3s;
+}
+.auth-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(123, 94, 167, 0.4); }
+.auth-btn:active { transform: scale(0.97); }
+.auth-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.auth-error {
+    background: rgba(255, 59, 48, 0.1);
+    border: 1px solid rgba(255, 59, 48, 0.2);
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-size: 0.85rem;
+    color: #ff6b6b;
+    margin-top: 12px;
+    display: none;
+}
+.auth-error.show { display: block; }
+
+/* ---------- ШАПКА ---------- */
+.header {
+    width: 100%;
+    max-width: 700px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 0;
+    margin-bottom: 20px;
+}
+.header .logo {
+    font-size: 1.4rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #b89fd6, #7b5ea7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.header .user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.8rem;
+    opacity: 0.7;
+}
+.header .user-key {
+    font-family: 'Courier New', monospace;
+    font-size: 0.75rem;
+    background: rgba(255,255,255,0.06);
+    padding: 6px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--glass-border);
+}
+.header .logout-btn {
+    width: auto;
+    padding: 8px 14px;
+    background: rgba(255, 59, 48, 0.15);
+    border: 1px solid rgba(255, 59, 48, 0.3);
+    color: #ff6b6b;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-family: inherit;
+}
+
+/* ---------- ДАШБОРД ---------- */
+.dashboard-container {
+    width: 100%;
+    max-width: 700px;
+    flex: 1;
+}
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    background: var(--glass);
+    border-radius: 24px;
+    border: 1px solid var(--glass-border);
+}
+.empty-state .icon {
+    font-size: 3rem;
+    margin-bottom: 12px;
+    opacity: 0.5;
+}
+.empty-state .text {
+    font-size: 0.95rem;
+    opacity: 0.6;
+    line-height: 1.7;
+}
+.empty-state .hint {
+    margin-top: 16px;
+    font-size: 0.8rem;
+    opacity: 0.4;
+}
+
+.apps-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.app-tile {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 20px;
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    border: 1px solid var(--glass-border);
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+.app-tile:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: var(--accent);
+    transform: translateY(-2px);
+}
+.app-tile:active { transform: scale(0.98); }
+.app-tile .icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #7b5ea7, #5a4a8a);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+.app-tile .icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.app-tile .info {
+    flex: 1;
+    min-width: 0;
+}
+.app-tile .info .name {
+    font-weight: 600;
+    font-size: 1.05rem;
+}
+.app-tile .info .meta {
+    font-size: 0.75rem;
+    opacity: 0.55;
+    margin-top: 4px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+.app-tile .info .meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+.app-tile .arrow {
+    font-size: 1.5rem;
+    opacity: 0.4;
+}
+
+/* ---------- FAB (КНОПКА +) ---------- */
+.fab {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: white;
+    font-size: 1.8rem;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 8px 30px rgba(123, 94, 167, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 100;
+}
+.fab:hover {
+    transform: scale(1.1);
+    box-shadow: 0 12px 40px rgba(123, 94, 167, 0.7);
+}
+.fab:active { transform: scale(0.95); }
+
+/* ---------- РЕДАКТОР ---------- */
+.editor-container {
+    width: 100%;
+    max-width: 700px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.form-group label {
+    font-size: 0.85rem;
+    opacity: 0.7;
+    font-weight: 500;
+    padding-left: 4px;
+}
+.form-group input[type="text"],
+.form-group textarea {
+    width: 100%;
+    padding: 14px;
+    border-radius: 14px;
+    border: 1px solid var(--glass-border);
+    background: rgba(255,255,255,0.05);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+.form-group input[type="text"]:focus,
+.form-group textarea:focus {
+    border-color: var(--accent);
+}
+.form-group textarea {
+    min-height: 250px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    resize: vertical;
+}
+
+.icon-picker {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 16px;
+    border: 1px solid var(--glass-border);
+}
+.icon-preview {
+    width: 72px;
+    height: 72px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #7b5ea7, #5a4a8a);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    flex-shrink: 0;
+    overflow: hidden;
+    border: 2px solid var(--glass-border);
+}
+.icon-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.icon-picker-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+}
+.icon-picker-actions button {
+    padding: 10px 16px;
+    border-radius: 12px;
+    border: 1px solid var(--glass-border);
+    background: rgba(255,255,255,0.05);
+    color: var(--text);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+}
+.icon-picker-actions button:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: var(--accent);
+}
+
+/* ---------- КНОПКИ ДЕЙСТВИЙ ---------- */
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+}
+.action-buttons button {
+    flex: 1;
+    min-width: 120px;
+    padding: 14px;
+    border-radius: 14px;
+    border: none;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.3s;
+}
+.btn-primary {
+    background: var(--accent);
+    color: white;
+}
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(123, 94, 167, 0.4);
+}
+.btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+.btn-secondary {
+    background: rgba(255,255,255,0.08);
+    color: var(--text);
+    border: 1px solid var(--glass-border) !important;
+}
+.btn-secondary:hover {
+    background: rgba(255,255,255,0.15);
+}
+.btn-danger {
+    background: rgba(255, 59, 48, 0.2);
+    color: #ff6b6b;
+    border: 1px solid rgba(255, 59, 48, 0.3) !important;
+}
+.btn-danger:hover {
+    background: rgba(255, 59, 48, 0.3);
+}
+
+/* ---------- ПРОГРЕСС ---------- */
+.progress-wrap {
+    display: none;
+    margin-top: 12px;
+}
+.progress-wrap.active { display: block; }
+.progress-bar {
+    width: 100%;
+    height: 6px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+.progress-bar .fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--accent), var(--success));
+    border-radius: 10px;
+    transition: width 0.3s ease;
+}
+.progress-text {
+    font-size: 0.8rem;
+    opacity: 0.7;
+    margin-top: 6px;
+    text-align: center;
+}
+
+/* ---------- ТОСТ ---------- */
+.toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: rgba(0, 0, 0, 0.9);
+    padding: 12px 24px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    z-index: 5000;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.toast.success { background: rgba(74, 222, 128, 0.9); color: #0a0a1a; }
+.toast.error { background: rgba(255, 59, 48, 0.9); }
+
+/* ---------- МОДАЛКА ---------- */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(12px);
+    z-index: 900;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+.modal-overlay.active { display: flex; }
+.modal-box {
+    background: var(--bg);
+    border-radius: 24px;
+    padding: 28px 24px;
+    max-width: 400px;
+    width: 100%;
+    border: 1px solid var(--glass-border);
+    text-align: center;
+}
+.modal-box h3 {
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+}
+.modal-box .modal-text {
+    font-size: 0.9rem;
+    opacity: 0.75;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+.modal-actions {
+    display: flex;
+    gap: 10px;
+}
+.modal-actions button {
+    flex: 1;
+    padding: 14px;
+    border-radius: 14px;
+    border: none;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+@media (max-width: 600px) {
+    .auth-container { padding: 30px 20px 24px; }
+    .auth-logo { font-size: 2.2rem; }
+    .header { padding: 14px 0; }
+    .header .user-info { gap: 6px; }
+    .header .user-key { font-size: 0.65rem; padding: 4px 8px; }
+    .app-tile { padding: 14px 16px; gap: 12px; }
+    .app-tile .icon { width: 48px; height: 48px; font-size: 1.5rem; }
+    .fab { bottom: 20px; right: 20px; width: 54px; height: 54px; }
+    .form-group textarea { min-height: 200px; font-size: 0.8rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ЭКРАН 1: ЛОГИН -->
+<div id="screenLogin" class="screen active">
+    <div class="auth-container">
+        <div class="auth-logo">CreatorLoL</div>
+        <div class="auth-sub">App Publisher</div>
+        <div class="auth-desc">
+            Введите свой ключ LoLOS, чтобы публиковать приложения в LoLAllApps.
+        </div>
+        <div class="auth-input-group">
+            <input type="text" id="keyInput" placeholder="XXXX-XXXX-XXXX-XXXX" maxlength="19" autocomplete="off">
+        </div>
+        <button class="auth-btn" id="loginBtn" onclick="loginCreator()" disabled>🔑 Войти</button>
+        <div class="auth-error" id="authError"></div>
+    </div>
+</div>
+
+<!-- ЭКРАН 2: ДАШБОРД -->
+<div id="screenDashboard" class="screen">
+    <div class="header">
+        <div class="logo">CreatorLoL</div>
+        <div class="user-info">
+            <div class="user-key" id="userKeyDisplay">----</div>
+            <button class="logout-btn" onclick="logoutCreator()">Выйти</button>
+        </div>
+    </div>
+    <div class="dashboard-container">
+        <div id="dashboardContent"></div>
+    </div>
+    <button class="fab" onclick="openEditor(null)" title="Создать приложение">+</button>
+</div>
+
+<!-- ЭКРАН 3: РЕДАКТОР -->
+<div id="screenEditor" class="screen">
+    <div class="header">
+        <div class="logo" id="editorTitle">Новое приложение</div>
+        <button class="logout-btn" onclick="closeEditor()" style="background: rgba(255,255,255,0.08); border-color: var(--glass-border); color: var(--text);">← Назад</button>
+    </div>
+    <div class="editor-container">
+        <div class="form-group">
+            <label>Иконка</label>
+            <div class="icon-picker">
+                <div class="icon-preview" id="iconPreview">📱</div>
+                <div class="icon-picker-actions">
+                    <button onclick="document.getElementById('iconInput').click()">📷 Загрузить картинку</button>
+                    <button onclick="resetIcon()">🎨 Эмодзи по умолчанию</button>
+                </div>
+                <input type="file" id="iconInput" accept="image/*" style="display:none;" onchange="uploadIcon(event)">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Название приложения</label>
+            <input type="text" id="appNameInput" placeholder="Например: Змейка" maxlength="50">
+        </div>
+
+        <div class="form-group">
+            <label>Код приложения (HTML + CSS + JS)</label>
+            <textarea id="appCodeInput" placeholder="<!DOCTYPE html>&#10;<html>&#10;  <head>...</head>&#10;  <body>...</body>&#10;</html>"></textarea>
+        </div>
+
+        <div class="progress-wrap" id="publishProgress">
+            <div class="progress-bar"><div class="fill" id="publishProgressFill"></div></div>
+            <div class="progress-text" id="publishProgressText">0%</div>
+        </div>
+
+        <div class="action-buttons">
+            <button class="btn-secondary" onclick="closeEditor()">Отмена</button>
+            <button class="btn-primary" id="saveBtn" onclick="saveApp()">💾 Сохранить</button>
+        </div>
+
+        <div class="action-buttons" id="deleteBlock" style="display:none;">
+            <button class="btn-danger" onclick="deleteApp()">🗑 Удалить приложение</button>
+        </div>
+    </div>
+</div>
+
+<!-- МОДАЛКА ПОДТВЕРЖДЕНИЯ -->
+<div class="modal-overlay" id="confirmModal">
+    <div class="modal-box">
+        <h3 id="confirmTitle">Подтверждение</h3>
+        <div class="modal-text" id="confirmText"></div>
+        <div class="modal-actions">
+            <button class="btn-secondary" onclick="closeConfirm()" style="background: rgba(255,255,255,0.08); color: var(--text);">Отмена</button>
+            <button class="btn-primary" id="confirmBtn" style="background: var(--danger);">Да</button>
+        </div>
+    </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+
+<script>
+// ============================================================
+// КОНФИГ
+// ============================================================
+firebase.initializeApp({
+    apiKey: "AIzaSyD9wOAfJ_hVfs9Xt0REXhc4G010LRqtv3s",
+    authDomain: "lolos-51c9c.firebaseapp.com",
+    projectId: "lolos-51c9c",
+    storageBucket: "lolos-51c9c.firebasestorage.app",
+    messagingSenderId: "143157807464",
+    appId: "1:143157807464:web:1a1e257800cbc341656edd"
+});
+const db = firebase.firestore();
+
+const CLOUD_NAME = 'l6nctqlk';
+const UPLOAD_PRESET = 'lolosos';
+const API_KEY = '711311979118738';
+const API_SECRET = 'uaxeK8fn3PSRFDBxLFU9Z1a6z38';
+
+// ============================================================
+// СОСТОЯНИЕ
+// ============================================================
+let currentKey = null;
+let currentUserData = null;
+let myApps = [];
+let editingAppId = null;
+let tempIconData = null;
+let confirmCallback = null;
+
+// ============================================================
+// УТИЛИТЫ
+// ============================================================
+function showToast(msg, type = '') {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast show ' + type;
+    clearTimeout(t._timeout);
+    t._timeout = setTimeout(() => t.className = 'toast ' + type, 2500);
+}
+
+function showScreen(name) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen' + name).classList.add('active');
+}
+
+function formatBytes(b) {
+    if (!b) return '0 Б';
+    if (b < 1024) return b + ' Б';
+    if (b < 1024 * 1024) return (b / 1024).toFixed(1) + ' КБ';
+    return (b / (1024 * 1024)).toFixed(2) + ' МБ';
+}
+
+function formatDate(ts) {
+    if (!ts) return '—';
+    const d = new Date(ts);
+    return d.toLocaleDateString('ru-RU', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+function formatKeyInput(input) {
+    let v = input.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+    if (v.length > 16) v = v.slice(0, 16);
+    let f = '';
+    for (let i = 0; i < v.length; i++) {
+        if (i === 4 || i === 8 || i === 12) f += '-';
+        f += v[i];
+    }
+    input.value = f;
+    const valid = /^[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(f);
+    document.getElementById('loginBtn').disabled = !valid;
+}
+
+// SHA-1 для Cloudinary
+async function sha1(str) {
+    const buf = new TextEncoder().encode(str);
+    const hash = await crypto.subtle.digest('SHA-1', buf);
+    return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+// ============================================================
+// АВТОРИЗАЦИЯ
+// ============================================================
+async function loginCreator() {
+    const keyInput = document.getElementById('keyInput');
+    const key = keyInput.value.trim().toUpperCase();
+    const btn = document.getElementById('loginBtn');
+    const err = document.getElementById('authError');
+
+    if (!/^[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(key)) {
+        err.textContent = '❌ Неверный формат ключа';
+        err.classList.add('show');
+        return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = '⏳ Проверка...';
+
+    try {
+        const doc = await db.collection('users').doc(key).get();
+        if (!doc.exists) {
+            err.textContent = '❌ Ключ не найден в LoLOS';
+            err.classList.add('show');
+            btn.disabled = false;
+            btn.textContent = '🔑 Войти';
+            return;
+        }
+
+        currentKey = key;
+        currentUserData = doc.data();
+        
+        // Сохраняем сессию на 30 дней
+        try {
+            localStorage.setItem('creatorlol_session', JSON.stringify({
+                key: key,
+                savedAt: Date.now()
+            }));
+        } catch (e) {}
+
+        err.classList.remove('show');
+        btn.textContent = '✅ Вход выполнен';
+        
+        setTimeout(() => {
+            document.getElementById('userKeyDisplay').textContent = key;
+            showScreen('Dashboard');
+            loadMyApps();
+        }, 500);
+
+    } catch (e) {
+        console.error(e);
+        err.textContent = '❌ Ошибка: ' + e.message;
+        err.classList.add('show');
+        btn.disabled = false;
+        btn.textContent = '🔑 Войти';
+    }
+}
+
+function logoutCreator() {
+    if (!confirm('Выйти из CreatorLoL?')) return;
+    try { localStorage.removeItem('creatorlol_session'); } catch (e) {}
+    currentKey = null;
+    currentUserData = null;
+    myApps = [];
+    document.getElementById('keyInput').value = '';
+    document.getElementById('loginBtn').disabled = true;
+    document.getElementById('loginBtn').textContent = '🔑 Войти';
+    showScreen('Login');
+}
+
+// ============================================================
+// ЗАГРУЗКА МОИХ ПРИЛОЖЕНИЙ
+// ============================================================
+async function loadMyApps() {
+    const container = document.getElementById('dashboardContent');
+    container.innerHTML = '<div class="empty-state"><div class="icon">⏳</div><div class="text">Загрузка...</div></div>';
+
+    try {
+        const snap = await db.collection('lolallapps')
+            .where('authorKey', '==', currentKey)
+            .get();
+
+        myApps = [];
+        snap.forEach(doc => {
+            myApps.push({ id: doc.id, ...doc.data() });
+        });
+
+        // Сортируем по дате обновления
+        myApps.sort((a, b) => (b.updated || 0) - (a.updated || 0));
+
+        renderDashboard();
+
+    } catch (e) {
+        console.error(e);
+        container.innerHTML = '<div class="empty-state"><div class="icon">❌</div><div class="text">Ошибка загрузки: ' + e.message + '</div></div>';
+    }
+}
+
+function renderDashboard() {
+    const container = document.getElementById('dashboardContent');
+
+    if (myApps.length === 0) {
+        container.innerHTML = `
+            <div class="empty-state">
+                <div class="icon">📦</div>
+                <div class="text">Нету приложений</div>
+                <div class="hint">Нажмите ➕ чтобы создать первое приложение</div>
+            </div>
+        `;
+        return;
+    }
+
+    let html = '<div class="apps-list">';
+    myApps.forEach(app => {
+        const iconHtml = app.icon && app.icon.startsWith('http')
+            ? `<img src="${app.icon}" alt="${app.name}">`
+            : app.icon || '📱';
+        const statusText = app.status === 'published' ? '✅ Опубликовано'
+            : app.status === 'pending' ? '⏳ На модерации'
+            : app.status === 'blocked' ? '🚫 Заблокировано'
+            : '📝 Черновик';
+        
+        html += `
+            <div class="app-tile" onclick="openEditor('${app.id}')">
+                <div class="icon">${iconHtml}</div>
+                <div class="info">
+                    <div class="name">${escapeHtml(app.name || 'Без названия')}</div>
+                    <div class="meta">
+                        <span>${statusText}</span>
+                        <span>📥 ${app.downloads || 0}</span>
+                        <span>⭐ ${(app.rating || 0).toFixed(1)}</span>
+                        <span>📅 ${formatDate(app.updated)}</span>
+                    </div>
+                </div>
+                <div class="arrow">›</div>
+            </div>
+        `;
+    });
+    html += '</div>';
+    container.innerHTML = html;
+}
+
+function escapeHtml(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+// ============================================================
+// РЕДАКТОР
+// ============================================================
+function openEditor(appId) {
+    editingAppId = appId;
+    tempIconData = null;
+
+    const title = document.getElementById('editorTitle');
+    const nameInput = document.getElementById('appNameInput');
+    const codeInput = document.getElementById('appCodeInput');
+    const iconPreview = document.getElementById('iconPreview');
+    const deleteBlock = document.getElementById('deleteBlock');
+
+    if (appId) {
+        // Редактирование существующего
+        const app = myApps.find(a => a.id === appId);
+        if (!app) { showToast('❌ Приложение не найдено', 'error'); return; }
+
+        title.textContent = '✏️ Редактирование';
+        nameInput.value = app.name || '';
+        codeInput.value = app.code || '';
+        
+        if (app.icon && app.icon.startsWith('http')) {
+            iconPreview.innerHTML = `<img src="${app.icon}">`;
+        } else {
+            iconPreview.textContent = app.icon || '📱';
+        }
+        
+        deleteBlock.style.display = 'block';
+
+    } else {
+        // Новое
+        title.textContent = '➕ Новое приложение';
+        nameInput.value = '';
+        codeInput.value = '';
+        iconPreview.textContent = '📱';
+        deleteBlock.style.display = 'none';
+    }
+
+    // Сброс прогресса
+    document.getElementById('publishProgress').classList.remove('active');
+    document.getElementById('publishProgressFill').style.width = '0%';
+    document.getElementById('saveBtn').disabled = false;
+
+    showScreen('Editor');
+}
+
+function closeEditor() {
+    editingAppId = null;
+    tempIconData = null;
+    showScreen('Dashboard');
+}
+
+// ============================================================
+// ЗАГРУЗКА ИКОНКИ
+// ============================================================
+async function uploadIcon(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    event.target.value = '';
+
+    if (file.size > 5 * 1024 * 1024) {
+        showToast('❌ Иконка больше 5 МБ', 'error');
+        return;
+    }
+
+    // Сжимаем в квадрат 200x200
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+            const canvas = document.createElement('canvas');
+            canvas.width = 200;
+            canvas.height = 200;
+            const ctx = canvas.getContext('2d');
+            
+            // Кроп по центру
+            const size = Math.min(img.width, img.height);
+            const sx = (img.width - size) / 2;
+            const sy = (img.height - size) / 2;
+            ctx.drawImage(img, sx, sy, size, size, 0, 0, 200, 200);
+
+            const compressed = canvas.toDataURL('image/jpeg', 0.85);
+            tempIconData = compressed;
+
+            const preview = document.getElementById('iconPreview');
+            preview.innerHTML = `<img src="${compressed}">`;
+            showToast('✅ Иконка загружена');
+        };
+        img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+}
+
+function resetIcon() {
+    tempIconData = null;
+    document.getElementById('iconPreview').textContent = '📱';
+}
+
+// ============================================================
+// СОХРАНЕНИЕ ПРИЛОЖЕНИЯ
+// ============================================================
+async function saveApp() {
+    const name = document.getElementById('appNameInput').value.trim();
+    const code = document.getElementById('appCodeInput').value.trim();
+
+    if (!name) { showToast('❌ Введите название', 'error'); return; }
+    if (name.length < 2) { showToast('❌ Название слишком короткое', 'error'); return; }
+    if (!code) { showToast('❌ Введите код приложения', 'error'); return; }
+    if (code.length < 50) { showToast('❌ Код слишком короткий', 'error'); return; }
+    if (code.length > 500 * 1024) { showToast('❌ Код больше 500 КБ', 'error'); return; }
+
+    const btn = document.getElementById('saveBtn');
+    btn.disabled = true;
+    btn.textContent = '⏳ Сохранение...';
+
+    const progressWrap = document.getElementById('publishProgress');
+    const progressFill = document.getElementById('publishProgressFill');
+    const progressText = document.getElementById('publishProgressText');
+    progressWrap.classList.add('active');
+
+    try {
+        let iconUrl = null;
+
+        // Если есть новая иконка — загружаем в Cloudinary
+        if (tempIconData) {
+            progressText.textContent = '📤 Загрузка иконки...';
+            progressFill.style.width = '20%';
+            
+            const publicId = 'CreatorLoL_Icon_' + currentKey.replace(/-/g, '') + '_' + Date.now();
+            iconUrl = await uploadToCloudinary(tempIconData, publicId, (p) => {
+                progressFill.style.width = (20 + p * 0.2) + '%';
+            });
+            
+            if (!iconUrl) throw new Error('Не удалось загрузить иконку');
+        }
+
+        progressText.textContent = '💾 Сохранение...';
+        progressFill.style.width = '50%';
+
+        const now = Date.now();
+
+        if (editingAppId) {
+            // Обновление
+            const app = myApps.find(a => a.id === editingAppId);
+            const updateData = {
+                name: name,
+                code: code,
+                updated: now,
+                codeSize: code.length,
+                status: 'pending' // на модерацию после изменения
+            };
+            
+            if (iconUrl) updateData.icon = iconUrl;
+            else if (app && app.icon) updateData.icon = app.icon;
+
+            await db.collection('lolallapps').doc(editingAppId).update(updateData);
+            
+            progressText.textContent = '✅ Обновлено!';
+            showToast('✅ Приложение обновлено', 'success');
+        } else {
+            // Создание
+            const newApp = {
+                authorKey: currentKey,
+                authorName: currentUserData?.name || 'Пользователь',
+                name: name,
+                code: code,
+                icon: iconUrl || '📱',
+                status: 'pending',
+                created: now,
+                updated: now,
+                downloads: 0,
+                rating: 0,
+                ratingCount: 0,
+                codeSize: code.length
+            };
+
+            await db.collection('lolallapps').add(newApp);
+            
+            progressText.textContent = '✅ Опубликовано!';
+            showToast('✅ Приложение отправлено на модерацию', 'success');
+        }
+
+        progressFill.style.width = '100%';
+
+        setTimeout(() => {
+            closeEditor();
+            loadMyApps();
+        }, 1200);
+
+    } catch (e) {
+        console.error(e);
+        showToast('❌ Ошибка: ' + e.message, 'error');
+        progressText.textContent = '❌ Ошибка: ' + e.message;
+        btn.disabled = false;
+        btn.textContent = '💾 Сохранить';
+    }
+}
+
+// ============================================================
+// CLOUDINARY UPLOAD (с подписью)
+// ============================================================
+async function uploadToCloudinary(base64Data, publicId, onProgress) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const timestamp = Math.floor(Date.now() / 1000);
+            
+            const paramsToSign = {
+                public_id: publicId,
+                timestamp: timestamp
+            };
+            const signStr = Object.keys(paramsToSign).sort()
+                .map(k => `${k}=${paramsToSign[k]}`).join('&') + API_SECRET;
+            const signature = await sha1(signStr);
+
+            const fd = new FormData();
+            fd.append('file', base64Data);
+            fd.append('public_id', publicId);
+            fd.append('api_key', API_KEY);
+            fd.append('timestamp', timestamp);
+            fd.append('signature', signature);
+
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`);
+
+            xhr.upload.onprogress = (e) => {
+                if (e.lengthComputable && onProgress) {
+                    onProgress((e.loaded / e.total) * 100);
+                }
+            };
+
+            xhr.onload = () => {
+                if (xhr.status >= 200 && xhr.status < 300) {
+                    try {
+                        const res = JSON.parse(xhr.responseText);
+                        resolve(res.secure_url);
+                    } catch (e) { reject(new Error('Ошибка парсинга')); }
+                } else {
+                    try {
+                        const err = JSON.parse(xhr.responseText);
+                        reject(new Error(err.error?.message || 'Ошибка загрузки'));
+                    } catch (e) { reject(new Error('HTTP ' + xhr.status)); }
+                }
+            };
+
+            xhr.onerror = () => reject(new Error('Сетевая ошибка'));
+            xhr.send(fd);
+
+        } catch (e) {
+            reject(e);
+        }
+    });
+}
+
+// ============================================================
+// УДАЛЕНИЕ ПРИЛОЖЕНИЯ
+// ============================================================
+function deleteApp() {
+    if (!editingAppId) return;
+    showConfirm(
+        'Удалить приложение?',
+        'Приложение будет удалено из LoLAllApps у всех юзеров. Это действие нельзя отменить.',
+        async () => {
+            try {
+                await db.collection('lolallapps').doc(editingAppId).delete();
+                showToast('🗑 Приложение удалено', 'success');
+                closeEditor();
+                loadMyApps();
+            } catch (e) {
+                showToast('❌ Ошибка: ' + e.message, 'error');
+            }
+        }
+    );
+}
+
+// ============================================================
+// МОДАЛКА ПОДТВЕРЖДЕНИЯ
+// ============================================================
+function showConfirm(title, text, callback) {
+    document.getElementById('confirmTitle').textContent = title;
+    document.getElementById('confirmText').textContent = text;
+    confirmCallback = callback;
+    document.getElementById('confirmModal').classList.add('active');
+}
+
+function closeConfirm() {
+    document.getElementById('confirmModal').classList.remove('active');
+    confirmCallback = null;
+}
+
+// ============================================================
+// ИНИЦИАЛИЗАЦИЯ
+// ============================================================
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('🎨 CreatorLoL загружен');
+
+    // Автозаполнение сессии
+    try {
+        const raw = localStorage.getItem('creatorlol_session');
+        if (raw) {
+            const session = JSON.parse(raw);
+            if (session.key) {
+                document.getElementById('keyInput').value = session.key;
+                document.getElementById('loginBtn').disabled = false;
+                // Пробуем автовход
+                setTimeout(() => {
+                    const key = session.key;
+                    db.collection('users').doc(key).get().then(doc => {
+                        if (doc.exists) {
+                            currentKey = key;
+                            currentUserData = doc.data();
+                            document.getElementById('userKeyDisplay').textContent = key;
+                            showScreen('Dashboard');
+                            loadMyApps();
+                            console.log('✅ Автовход выполнен');
+                        } else {
+                            localStorage.removeItem('creatorlol_session');
+                        }
+                    }).catch(() => {});
+                }, 300);
+            }
+        }
+    } catch (e) {}
+
+    // Форматирование ключа
+    document.getElementById('keyInput').addEventListener('input', function() {
+        formatKeyInput(this);
+    });
+
+    // Enter на ключе
+    document.getElementById('keyInput').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && !document.getElementById('loginBtn').disabled) {
+            loginCreator();
+        }
+    });
+
+    // Кнопка подтверждения в модалке
+    document.getElementById('confirmBtn').addEventListener('click', () => {
+        if (confirmCallback) confirmCallback();
+        closeConfirm();
+    });
+});
+</script>
+</body>
+</html>
